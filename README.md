@@ -1,6 +1,4 @@
-# ChargeFlow EV — Charging Operations Platform
-
-## Overview
+# ChargeFlow EV ⚡ — Charging Operations Platform
 
 This project is a backend system that models how e-bike usage generates energy consumption, charging activity, and billable revenue.
 
