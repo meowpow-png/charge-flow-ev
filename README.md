@@ -42,10 +42,10 @@ This project demonstrates how those concerns can be modeled, measured, and bille
 
 ## Documentation
 
-- [[system-concept|System Concept]] — high-level conceptual model and system behavior
-- [[domain-concept|Domain Concepts]] — core domain language and models
-- [[journal-index|Development Journal]] — implementation notes and decisions
-- [[project-spec|Project Specification]] — scope, constraints, success criteria, and technology choices
+- [System Concept](docs/system-concept.md) — high-level conceptual model and system behavior
+- [Domain Concepts](docs/domain-concept.md) — core domain language and models
+- [Development Journal](docs/dev-journal/journal-index.md) — implementation notes and decisions
+- [Project Specification](docs/project-spec.md) — scope, constraints, success criteria, and technology choices
 
 ## Inspecting the System
 
