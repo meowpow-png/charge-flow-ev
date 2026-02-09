@@ -7,11 +7,9 @@ tags: [docs, concept]
 > It exists to clarify domain behavior and data lifecycles and does not prescribe
 > implementation details, APIs, or architectural patterns.
 
----
 
 ![[diagram.svg]]
 
----
 
 ## Concept Overview
 
@@ -24,15 +22,11 @@ At a high level, the system models a real e-bike going through a simple ride and
 - **When charging ends**, the total energy delivered is fixed and recorded
 - After **riding and charging are complete**, costs and usage metrics are calculated from recorded data
 
----
-
 ## Design Principles
 
 - **Immutability:** sessions are finalized and never modified afterward
 - **Determinism:** derived results are predictable and reproducible
 - **Backend-first modeling:** no assumptions about UI or presentation
-
----
 
 ## Session Lifecycle
 
@@ -79,8 +73,6 @@ When charging ends, the session is finalized. Total energy delivered is fixed, a
 charging session becomes **immutable**. At this point, the system has a complete record
 of energy replenishment and all inputs required for billing derivation are available.
 
----
-
 ## Billing & Analytics
 
 Once ride and charging sessions are complete, billing and analytics are derived from the
@@ -96,8 +88,6 @@ such as total energy consumed, total energy charged, total revenue, counts of ri
 charging sessions, and simple averages. All analytics are read-only, derived from immutable
 data, and explainable by tracing results back to individual sessions.
 
----
-
 ## Summary
 
 The ChargeFlow EV system models EV usage as a sequence of simple, deterministic steps:
@@ -105,5 +95,3 @@ ride → charge → derive.
 
 By keeping behavior explicit and data immutable, the system enables clear billing,
 trustworthy analytics, and a backend design that is easy to reason about, test, and evaluate.
-
----

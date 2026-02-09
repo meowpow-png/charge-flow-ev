@@ -5,8 +5,6 @@ tags: [docs, roadmap]
 
 > This document defines the scope and constraints of the EV analytics backend demo.
 
----
-
 ## Scope & Non-Goals
 
 This project models a **single, end-to-end EV charging analytics and billing flow**.
@@ -38,8 +36,6 @@ This project intentionally does **not** attempt to solve the following:
 
 These exclusions are deliberate to keep focus on analytics and billing logic.
 
----
-
 ## Definition of Done
 
 The project is considered successful if:
@@ -50,15 +46,11 @@ The project is considered successful if:
 - Aggregated metrics can be derived and explained from stored data
 - A technical reviewer can understand the system and its value in under one minute
 
----
-
 ## Constraints
 
 - The project is built within a fixed 5-day timeframe
 - The system operates under a single logical tenant
 - All pricing and calculations are transparent and reproducible
-
----
 
 ## Technology
 
@@ -73,8 +65,6 @@ The project is considered successful if:
 - **CI/CD:** Basic pipeline for build and tests on push
 - **Frontend:** None (REST-only backend; UI intentionally out of scope)
 - **Client:** Minimal LibGDX-based client used to emit ride and charging telemetry
-
----
 
 ## Testing
 
@@ -92,5 +82,3 @@ behavior stabilizes, automated tests are introduced:
 - Focused integration tests for persistence and aggregation boundaries
 
 The goal of testing in this project is not exhaustive coverage, but to ensure that the most critical and error-prone logic is verified and remains stable as the system evolves.
-
----

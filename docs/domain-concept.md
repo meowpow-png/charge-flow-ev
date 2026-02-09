@@ -44,8 +44,6 @@ Other contexts may not:
 - Change session state
 - Control session lifecycle
 
----
-
 ## Telemetry Context
 
 The Telemetry context captures **raw EV measurements** during active sessions.
@@ -81,8 +79,6 @@ Other contexts may:
 Other contexts may not:
 - Modify telemetry
 - Attach business meaning to telemetry
-
----
 
 ## Billing Context
 
@@ -122,8 +118,6 @@ Billing may not:
 - Modify domain data
 - Store billing as primary state
 
----
-
 ## Analytics (Read-Only Projection)
 
 Analytics exposes read-only aggregates over finalized data.
@@ -157,5 +151,3 @@ Analytics may not:
 - Modify domain data
 - Enforce rules
 - Participate in workflows
-
----

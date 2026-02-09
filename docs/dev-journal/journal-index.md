@@ -7,8 +7,6 @@ tags: [docs, journal]
 
 This journal documents **key engineering decisions and scope control** made during the 5-day development of **ChargeFlow EV** demo project.
 
----
-
 ## Entries
 
 - [[d1-project-definition|Day 1 — Project Definition & Documentation]]

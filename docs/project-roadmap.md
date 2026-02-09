@@ -36,8 +36,6 @@ The project intent, scope, and constraints are fully defined and documented.
 Implementation can begin on Day 2 with no unresolved questions about
 scope, terminology, or project direction.
 
----
-
 ## Day 2 — Backend Skeleton & Persistence Baseline
 
 **Goal:**
@@ -70,8 +68,6 @@ The backend can accept basic session-related API calls and persist domain data r
 
 A reviewer can start the application, create a ride or charging session via Swagger,
 and verify that the data is correctly stored and retrieved from the database.
-
----
 
 ## Day 3 — Analytics & Deterministic Derivations
 
@@ -106,8 +102,6 @@ from persisted session data and exposed via read-only APIs.
 
 A reviewer can inspect analytics endpoints and clearly understand how
 raw session data translates into billing and usage metrics.
-
----
 
 ## Day 4 — Simulation Client & Telemetry Ingestion
 
@@ -144,8 +138,6 @@ and the backend ingests and processes this data correctly.
 The system demonstrates a full end-to-end flow using externally generated telemetry,
 while remaining fully inspectable without the simulation client.
 
----
-
 ## Day 5 — Polish, Hardening & Demo Readiness
 
 **Goal:**
@@ -180,5 +172,3 @@ and no guidance from the author.
 
 A reviewer can run the project, inspect persisted data and analytics,
 and understand the system’s behavior and value without additional explanation.
-
----
