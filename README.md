@@ -1,8 +1,3 @@
----
-title: "ChargeFlow EV — Charging Operations Platform"
-tags: docs
----
-
 ## Overview
 
 This project is a backend system that models how e-bike usage generates energy consumption, charging activity, and billable revenue.
@@ -16,8 +11,6 @@ A minimal simulation client is included solely to generate realistic telemetry f
 - Billing and metrics are derived when sessions are finalized
 - Aggregated analytics are exposed via read-only endpoints
 
----
-
 ## What Problem This Solves
 
 Companies operating shared e-bikes or EV assets need to understand:
@@ -27,8 +20,6 @@ Companies operating shared e-bikes or EV assets need to understand:
 - How usage translates into revenue
 
 This project demonstrates how those concerns can be modeled, measured, and billed in a clean backend system.
-
----
 
 ## System Components
 
@@ -41,8 +32,6 @@ This project demonstrates how those concerns can be modeled, measured, and bille
 - **Simulation Client (optional)**
   A minimal LibGDX-based tool that simulates a single e-bike ride and charging flow by emitting telemetry via the backend APIs.
 
----
-
 ## Demo Flow
 
 1. A ride session is started
@@ -51,16 +40,12 @@ This project demonstrates how those concerns can be modeled, measured, and bille
 4. A charging session completes
 5. Billing and metrics are calculated automatically
 
----
-
 ## Documentation
 
 - [[system-concept|System Concept]] — high-level conceptual model and system behavior
 - [[domain-concept|Domain Concepts]] — core domain language and models
 - [[journal-index|Development Journal]] — implementation notes and decisions
 - [[project-spec|Project Specification]] — scope, constraints, success criteria, and technology choices
-
----
 
 ## Inspecting the System
 
@@ -77,10 +62,6 @@ The backend can be inspected in three ways:
    A minimal LibGDX client is included to demonstrate how telemetry is generated.
    This is not required to evaluate the backend.
 
----
-
 ## Running the Demo
 
 > Detailed setup instructions will be added once implementation begins.
-
----
