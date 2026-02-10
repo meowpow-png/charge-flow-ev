@@ -1,0 +1,4 @@
+// wrapper task that just forwards to backend bootRun
+tasks.register("bootRun") {
+    dependsOn(":backend:bootRun")
+}
