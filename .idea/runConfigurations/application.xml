@@ -4,6 +4,7 @@
     <module name="charge-flow-ev.backend.main" />
     <method v="2">
       <option name="Make" enabled="true" />
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="database" run_configuration_type="docker-deploy" />
     </method>
   </configuration>
 </component>
