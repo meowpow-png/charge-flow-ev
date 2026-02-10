@@ -2,3 +2,14 @@
 tasks.register("bootRun") {
     dependsOn(":backend:bootRun")
 }
+
+tasks.register("unitTest") {
+    group = "verification"
+    description = "Runs backend unit tests with JaCoCo report"
+
+    dependsOn(":backend:test", ":backend:jacocoTestReport")
+    doLast {
+        def reportFile = file("backend/build/reports/jacoco/test/html/index.html")
+        println "\nJaCoCo report generated:\n${reportFile.absolutePath}\n"
+    }
+}
