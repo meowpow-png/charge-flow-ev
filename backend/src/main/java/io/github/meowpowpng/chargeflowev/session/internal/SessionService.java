@@ -5,6 +5,7 @@ import io.github.meowpowpng.chargeflowev.session.domain.SessionState;
 import io.github.meowpowpng.chargeflowev.session.domain.SessionType;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +22,9 @@ public class SessionService {
     }
 
     public Session createSession(SessionType type) {
+        if (repository.existsByState(SessionState.ACTIVE)) {
+            throw new IllegalStateException("An active session already exists");
+        }
         var uuid = UUID.randomUUID();
         var now = Instant.now();
 
@@ -44,7 +48,7 @@ public class SessionService {
         if (session.isFinalized()) {
             throw new IllegalStateException("Session already finalized");
         }
-        session.setState(SessionState.FINALIZED);
+        session.finalizeSession(Clock.systemUTC());
         return repository.save(session);
     }
 }

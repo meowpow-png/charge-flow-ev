@@ -5,10 +5,17 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.Clock;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * @implNote
+ * This class does not validate numeric energy semantics.
+ * Energy totals are treated as opaque inputs from upstream aggregation logic.
+ */
 @Entity
 @Table(name = "session")
 public class Session {
@@ -28,7 +35,7 @@ public class Session {
     @Column(name = "ended_at")
     private Instant endedAt;
 
-    @Column(name = "energy_total", precision = 10, scale = 3)
+    @Column(name = "energy_total", precision = 10, scale = 3, nullable = false)
     private BigDecimal energyTotal;
 
     @Column(nullable = false, length = 32)
@@ -42,6 +49,7 @@ public class Session {
         this.type = Objects.requireNonNull(type, "type must not be null");
         this.startedAt = Objects.requireNonNull(startedAt, "startedAt must not be null");
         this.state = Objects.requireNonNull(state, "state must not be null");
+        this.energyTotal = BigDecimal.ZERO;
     }
 
     @NonNull
@@ -79,14 +87,31 @@ public class Session {
     }
 
     public void setEndedAt(@NonNull Instant endedAt) {
+        assertNotFinalized();
         this.endedAt = endedAt;
     }
 
-    public void setEnergyTotal(BigDecimal energyTotal) {
-        this.energyTotal = energyTotal;
+    public void addEnergy(@NonNull BigDecimal delta) {
+        assertNotFinalized();
+        if (delta.signum() < 0) {
+            throw new IllegalArgumentException("Energy delta must not be a negative value");
+        }
+        // normalize scale to match database precision
+        BigDecimal normalized = delta.setScale(3, RoundingMode.HALF_UP);
+        this.energyTotal = this.energyTotal.add(normalized);
     }
 
-    public void setState(SessionState state) {
-        this.state = state;
+    public void finalizeSession(Clock clock) {
+        if (isFinalized()) {
+            throw new IllegalStateException("Cannot change state of finalized session");
+        }
+        this.endedAt = Instant.now(clock);
+        this.state = SessionState.FINALIZED;
+    }
+
+    private void assertNotFinalized() {
+        if (isFinalized()) {
+            throw new IllegalStateException("Finalized session is immutable");
+        }
     }
 }

@@ -27,12 +27,12 @@ class BillingCalculatorTest {
 
         BillingResult result = calculator.calculate(sessionId, billableEnergy, pricingRule);
 
-        assertThat(result.sessionId()).isEqualTo(sessionId);
-        assertThat(result.billableEnergy()).isEqualTo(billableEnergy);
-        assertThat(result.unitPrice()).isEqualTo(unitPrice);
+        assertThat(result.getSessionId()).isEqualTo(sessionId);
+        assertThat(result.getBillableEnergy()).isEqualTo(billableEnergy);
+        assertThat(result.getUnitPrice()).isEqualTo(unitPrice);
 
         var expectedTotalCost = billableEnergy.multiply(unitPrice);
-        assertThat(result.totalCost()).isEqualByComparingTo(expectedTotalCost);
+        assertThat(result.getTotalCost()).isEqualByComparingTo(expectedTotalCost);
     }
 
     @Test
@@ -44,12 +44,18 @@ class BillingCalculatorTest {
         BigDecimal billableEnergy = new BigDecimal("10.0");
         PricingRule pricingRule = new PricingRule(new BigDecimal("0.25"));
 
-        assertNpeThrown(() -> calculator.calculate(null, billableEnergy, pricingRule));
-        assertNpeThrown(() -> calculator.calculate(sessionId, null, pricingRule));
-        assertNpeThrown(() -> calculator.calculate(sessionId, billableEnergy, null));
+        assertNullPointerExceptionThrown(() ->
+                calculator.calculate(null, billableEnergy, pricingRule)
+        );
+        assertNullPointerExceptionThrown(() ->
+                calculator.calculate(sessionId, null, pricingRule)
+        );
+        assertNullPointerExceptionThrown(() ->
+                calculator.calculate(sessionId, billableEnergy, null)
+        );
     }
 
-    private static void assertNpeThrown(ThrowableAssert.ThrowingCallable callable) {
+    private static void assertNullPointerExceptionThrown(ThrowableAssert.ThrowingCallable callable) {
         assertThatThrownBy(callable).isInstanceOf(NullPointerException.class);
     }
 }

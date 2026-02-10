@@ -27,19 +27,19 @@ public final class BillingResult {
         this.totalCost = Objects.requireNonNull(totalCost, "totalCost must not be null");
     }
 
-    public UUID sessionId() {
+    public UUID getSessionId() {
         return sessionId;
     }
 
-    public BigDecimal billableEnergy() {
+    public BigDecimal getBillableEnergy() {
         return billableEnergy;
     }
 
-    public BigDecimal unitPrice() {
+    public BigDecimal getUnitPrice() {
         return unitPrice;
     }
 
-    public BigDecimal totalCost() {
+    public BigDecimal getTotalCost() {
         return totalCost;
     }
 }
