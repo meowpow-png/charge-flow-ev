@@ -72,6 +72,10 @@ public class Session {
         return state;
     }
 
+    public boolean isFinalized() {
+        return state == SessionState.FINALIZED;
+    }
+
     public void setEndedAt(Instant endedAt) {
         this.endedAt = endedAt;
     }
