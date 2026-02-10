@@ -7,7 +7,7 @@ tags: [docs, concept]
 > It exists to clarify domain behavior and data lifecycles and does not prescribe
 > implementation details, APIs, or architectural patterns.
 
-![Diagram](diagram.svg)
+![Diagram](../assets/diagram.svg)
 
 ## Concept Overview
 
