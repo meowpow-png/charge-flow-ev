@@ -9,8 +9,9 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 
 ## IntelliJ IDEA
-.idea/
+.idea/*
 *.iml
+!.idea/runConfigurations
 
 ## OS files
 .DS_Store
