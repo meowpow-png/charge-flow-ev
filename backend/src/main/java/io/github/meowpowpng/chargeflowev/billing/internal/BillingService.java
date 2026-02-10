@@ -30,7 +30,7 @@ public class BillingService {
 
     public BillingResult calculateForSession(UUID sessionId) {
         Session session = sessionQuery.findFinalizedById(sessionId).orElseThrow(() -> {
-            var message = "Finalized session not found (id=" + sessionId.toString() + ')';
+            var message = "Finalized session not found (id=" + sessionId + ')';
             return new IllegalStateException(message);
         });
         return calculator.calculate(session.getId(), session.getEnergyTotal(), pricingRule);

@@ -2,6 +2,7 @@ package io.github.meowpowpng.chargeflowev.session.domain;
 
 import jakarta.persistence.*;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -23,6 +24,7 @@ public class Session {
     @Column(name = "started_at", nullable = false)
     private Instant startedAt;
 
+    @Nullable
     @Column(name = "ended_at")
     private Instant endedAt;
 
@@ -57,7 +59,7 @@ public class Session {
         return startedAt;
     }
 
-    @NonNull
+    @Nullable
     public Instant getEndedAt() {
         return endedAt;
     }
@@ -76,7 +78,7 @@ public class Session {
         return state == SessionState.FINALIZED;
     }
 
-    public void setEndedAt(Instant endedAt) {
+    public void setEndedAt(@NonNull Instant endedAt) {
         this.endedAt = endedAt;
     }
 
