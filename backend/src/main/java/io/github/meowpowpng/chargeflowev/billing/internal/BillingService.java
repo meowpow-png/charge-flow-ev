@@ -4,7 +4,6 @@ import io.github.meowpowpng.chargeflowev.billing.domain.BillingCalculator;
 import io.github.meowpowpng.chargeflowev.billing.domain.BillingResult;
 import io.github.meowpowpng.chargeflowev.billing.domain.PricingRule;
 import io.github.meowpowpng.chargeflowev.session.api.SessionQuery;
-import io.github.meowpowpng.chargeflowev.session.domain.Session;
 
 import org.springframework.stereotype.Service;
 
@@ -29,10 +28,9 @@ public class BillingService {
     }
 
     public BillingResult calculateForSession(UUID sessionId) {
-        Session session = sessionQuery.findFinalizedById(sessionId).orElseThrow(() -> {
-            var message = "Finalized session not found (id=" + sessionId + ')';
-            return new IllegalStateException(message);
-        });
+        var session = sessionQuery.findFinalizedById(sessionId).orElseThrow(() ->
+            new IllegalStateException("Finalized session not found (id=" + sessionId + ')')
+        );
         return calculator.calculate(session.getId(), session.getEnergyTotal(), pricingRule);
     }
 }

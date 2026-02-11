@@ -1,7 +1,8 @@
 package io.github.meowpowpng.chargeflowev.session.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import org.jspecify.annotations.NonNull;
+
 import org.jspecify.annotations.Nullable;
 
 import java.math.BigDecimal;
@@ -18,17 +19,18 @@ import java.util.UUID;
  */
 @Entity
 @Table(name = "session")
+@SuppressWarnings("NotNullFieldNotInitialized")
 public class Session {
 
     @Id
     @Column(nullable = false, updatable = false)
     private UUID id;
 
-    @Column(nullable = false, length = 32)
+    @Column(nullable = false, length = 32, updatable = false)
     @Enumerated(EnumType.STRING)
     private SessionType type;
 
-    @Column(name = "started_at", nullable = false)
+    @Column(name = "started_at", nullable = false, updatable = false)
     private Instant startedAt;
 
     @Nullable
@@ -42,6 +44,7 @@ public class Session {
     @Enumerated(EnumType.STRING)
     private SessionState state;
 
+    @SuppressWarnings("unused")
     protected Session() {}
 
     public Session(UUID id, SessionType type, Instant startedAt, SessionState state) {
@@ -52,17 +55,14 @@ public class Session {
         this.energyTotal = BigDecimal.ZERO;
     }
 
-    @NonNull
     public UUID getId() {
         return id;
     }
 
-    @NonNull
     public SessionType getType() {
         return type;
     }
 
-    @NonNull
     public Instant getStartedAt() {
         return startedAt;
     }
@@ -72,26 +72,31 @@ public class Session {
         return endedAt;
     }
 
-    @NonNull
     public BigDecimal getEnergyTotal() {
         return energyTotal;
     }
 
-    @NonNull
+    @SuppressWarnings("unused")
     public SessionState getState() {
         return state;
     }
 
+    @JsonIgnore
+    public boolean isActive() {
+        return state == SessionState.ACTIVE;
+    }
+
+    @JsonIgnore
     public boolean isFinalized() {
         return state == SessionState.FINALIZED;
     }
 
-    public void setEndedAt(@NonNull Instant endedAt) {
+    public void setEndedAt(Instant endedAt) {
         assertNotFinalized();
         this.endedAt = endedAt;
     }
 
-    public void addEnergy(@NonNull BigDecimal delta) {
+    public void addEnergy(BigDecimal delta) {
         assertNotFinalized();
         if (delta.signum() < 0) {
             throw new IllegalArgumentException("Energy delta must not be a negative value");

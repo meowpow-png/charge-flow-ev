@@ -1,5 +1,6 @@
 package io.github.meowpowpng.chargeflowev.session.internal;
 
+import io.github.meowpowpng.chargeflowev.session.api.FinalizedSession;
 import io.github.meowpowpng.chargeflowev.session.api.SessionQuery;
 import io.github.meowpowpng.chargeflowev.session.domain.Session;
 
@@ -19,7 +20,8 @@ public class SessionQueryImpl implements SessionQuery {
     }
 
     @Override
-    public Optional<Session> findFinalizedById(UUID sessionId) {
-        return repository.findById(sessionId).filter(Session::isFinalized);
+    public Optional<FinalizedSession> findFinalizedById(UUID sessionId) {
+        var session = repository.findById(sessionId).filter(Session::isFinalized);
+        return session.map(FinalizedSessionImpl::new);
     }
 }
