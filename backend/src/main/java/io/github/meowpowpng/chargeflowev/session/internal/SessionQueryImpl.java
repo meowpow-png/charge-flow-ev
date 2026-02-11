@@ -6,9 +6,7 @@ import io.github.meowpowpng.chargeflowev.session.domain.Session;
 
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 public class SessionQueryImpl implements SessionQuery {
@@ -23,5 +21,15 @@ public class SessionQueryImpl implements SessionQuery {
     public Optional<FinalizedSession> findFinalizedById(UUID sessionId) {
         var session = repository.findById(sessionId).filter(Session::isFinalized);
         return session.map(FinalizedSessionImpl::new);
+    }
+
+    @Override
+    public List<FinalizedSession> findAllFinalized() {
+       var result = repository.findAll().stream()
+                .filter(Session::isFinalized)
+                .map(FinalizedSessionImpl::new)
+                .toList();
+
+        return new ArrayList<>(result);
     }
 }
