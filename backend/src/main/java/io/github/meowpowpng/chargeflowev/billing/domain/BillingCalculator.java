@@ -5,6 +5,12 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+/**
+ * @implNote
+ * Cost derivation is deterministic and does not apply
+ * rounding or normalization. Presentation or financial
+ * rounding policy is outside the scope of this demo.
+ */
 @Component
 public final class BillingCalculator {
 

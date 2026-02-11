@@ -1,8 +1,5 @@
-package io.github.meowpowpng.chargeflowev.session;
+package io.github.meowpowpng.chargeflowev.session.domain;
 
-import io.github.meowpowpng.chargeflowev.session.domain.Session;
-import io.github.meowpowpng.chargeflowev.session.domain.SessionState;
-import io.github.meowpowpng.chargeflowev.session.domain.SessionType;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,6 +29,7 @@ class SessionTest {
     }
 
     @Test
+    @SuppressWarnings("DataFlowIssue")
     @DisplayName("Should throw exception when constructor argument is null")
     void should_ThrowException_when_ConstructorArgumentIsNull() {
         UUID id = UUID.randomUUID();

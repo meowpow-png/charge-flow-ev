@@ -1,8 +1,5 @@
-package io.github.meowpowpng.chargeflowev.billing;
+package io.github.meowpowpng.chargeflowev.billing.domain;
 
-import io.github.meowpowpng.chargeflowev.billing.domain.BillingCalculator;
-import io.github.meowpowpng.chargeflowev.billing.domain.BillingResult;
-import io.github.meowpowpng.chargeflowev.billing.domain.PricingRule;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,6 +50,20 @@ class BillingCalculatorTest {
         assertNullPointerExceptionThrown(() ->
                 calculator.calculate(sessionId, billableEnergy, null)
         );
+    }
+
+    @Test
+    @DisplayName("Should return zero total cost when billable energy is zero")
+    void should_ReturnZeroTotalCost_when_BillableEnergyIsZero() {
+        BillingCalculator calculator = new BillingCalculator();
+        UUID sessionId = UUID.randomUUID();
+
+        BigDecimal billableEnergy = BigDecimal.ZERO;
+        BigDecimal unitPrice = new BigDecimal("0.30");
+        PricingRule pricingRule = new PricingRule(unitPrice);
+
+        BillingResult result = calculator.calculate(sessionId, billableEnergy, pricingRule);
+        assertThat(result.getTotalCost()).isEqualByComparingTo(BigDecimal.ZERO);
     }
 
     private static void assertNullPointerExceptionThrown(ThrowableAssert.ThrowingCallable callable) {

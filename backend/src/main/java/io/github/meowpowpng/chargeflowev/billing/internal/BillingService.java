@@ -17,8 +17,8 @@ import java.util.UUID;
 public class BillingService implements BillingQuery {
 
     // TODO: Externalize into application configuration instead of hardcoding
-    private static final BigDecimal RIDE_PRICE = new BigDecimal("0.30");
-    private static final BigDecimal CHARGING_COST = new BigDecimal("0.10");
+    static final BigDecimal RIDE_PRICE = new BigDecimal("0.30");
+    static final BigDecimal CHARGING_COST = new BigDecimal("0.10");
 
     private final PricingRule ridePricingRule = new PricingRule(RIDE_PRICE);
     private final PricingRule chargingPricingRule = new PricingRule(CHARGING_COST);
