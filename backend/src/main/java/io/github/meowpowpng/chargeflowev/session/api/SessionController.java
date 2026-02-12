@@ -10,12 +10,13 @@ import java.util.Objects;
 import java.util.UUID;
 
 @RestController
+@SuppressWarnings("unused")
 @RequestMapping("/sessions")
-public class SessionController {
+public final class SessionController {
 
     private final SessionService service;
 
-    public SessionController(SessionService service) {
+    SessionController(SessionService service) {
         Objects.requireNonNull(service, "service must not be null");
         this.service = service;
     }

@@ -9,12 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Objects;
 
 @RestController
+@SuppressWarnings("unused")
 @RequestMapping("/demo")
-public class DemoController {
+public final class DemoController {
 
     private final DemoService demoService;
 
-    public DemoController(DemoService demoService) {
+    DemoController(DemoService demoService) {
         this.demoService = Objects.requireNonNull(demoService, "demoService must not be null");
     }
 

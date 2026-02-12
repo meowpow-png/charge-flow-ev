@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @SuppressWarnings("ClassCanBeRecord")
-public class FinalizedSessionImpl implements FinalizedSession {
+final class FinalizedSessionImpl implements FinalizedSession {
 
     private final Session session;
 

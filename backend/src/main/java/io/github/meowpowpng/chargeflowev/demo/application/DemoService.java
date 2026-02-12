@@ -10,13 +10,14 @@ import io.github.meowpowpng.chargeflowev.session.domain.SessionType;
 
 import io.github.meowpowpng.chargeflowev.telemetry.api.TelemetryCommand;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
 
-@Component
+@Service
 public class DemoService {
 
     private static final BigDecimal RIDE_DELTA = new BigDecimal("0.05");
@@ -27,7 +28,7 @@ public class DemoService {
     private final TelemetryCommand telemetryCommand;
     private final BillingQuery billingQuery;
 
-    public DemoService(
+    DemoService(
             SessionQuery sessionQuery,
             SessionCommand sessionCommand,
             TelemetryCommand telemetryCommand,

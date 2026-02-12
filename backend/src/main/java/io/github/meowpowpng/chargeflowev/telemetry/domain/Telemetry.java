@@ -30,7 +30,7 @@ public class Telemetry {
     private Instant emittedAt;
 
     @SuppressWarnings("unused")
-    Telemetry() {}
+    protected Telemetry() {}
 
     public Telemetry(UUID id, UUID sessionId, BigDecimal energyDelta, Instant emittedAt) {
         this.id = Objects.requireNonNull(id, "id must not be null");

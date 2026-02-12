@@ -18,7 +18,7 @@ public class SessionService implements SessionCommand, SessionQuery {
 
     private final SessionRepository repository;
 
-    public SessionService(SessionRepository repository) {
+    SessionService(SessionRepository repository) {
         Objects.requireNonNull(repository, "repository must not be null");
         this.repository = repository;
     }
