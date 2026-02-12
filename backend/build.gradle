@@ -1,9 +1,10 @@
 //file:noinspection GroovyAssignabilityCheck
 plugins {
-	id 'java'
+    id 'java'
     id 'jacoco'
-	id 'org.springframework.boot' version '4.0.2'
-	id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.springframework.boot' version '4.0.2'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'com.avast.gradle.docker-compose' version '0.17.21'
 }
 
 group = 'io.github.meowpowpng'
@@ -14,6 +15,11 @@ java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(21)
 	}
+}
+
+dockerCompose {
+    useComposeFiles = ["../docker-compose.yml"]
+    startedServices = ["postgres"]
 }
 
 repositories {
@@ -53,6 +59,11 @@ dependencies {
     integrationTestImplementation 'org.springframework.boot:spring-boot-starter-test'
     integrationTestImplementation 'org.testcontainers:postgresql:1.21.3'
     integrationTestImplementation 'org.testcontainers:jdbc:1.21.3'
+}
+
+tasks.named("bootRun") {
+    dependsOn composeUp
+    finalizedBy composeDown
 }
 
 tasks.withType(Test).configureEach {
