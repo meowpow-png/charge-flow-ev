@@ -91,6 +91,11 @@ public class SessionService implements SessionCommand, SessionQuery {
     }
 
     @Override
+    public boolean sessionExists(UUID sessionId) {
+        return repository.findById(sessionId).isPresent();
+    }
+
+    @Override
     public boolean hasActiveSession() {
         return repository.existsByState(SessionState.ACTIVE);
     }

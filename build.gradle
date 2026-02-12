@@ -15,33 +15,3 @@ tasks.register("integrationTest") {
     description = "Runs backend integration tests."
     dependsOn(":backend:integrationTest")
 }
-
-tasks.register("testCoverage") {
-    group = "verification"
-    description = "Generates backend unit test coverage report."
-    dependsOn(":backend:testCoverage")
-
-    doLast {
-        def reportFile = project(":backend").layout.buildDirectory
-                .file("reports/jacoco/testCoverage/html/index.html")
-                .get()
-                .asFile
-
-        println "\nUnit test coverage report:\n${reportFile.absolutePath}\n"
-    }
-}
-
-tasks.register("integrationTestCoverage") {
-    group = "verification"
-    description = "Generates backend integration test coverage report."
-    dependsOn(":backend:integrationTestCoverage")
-
-    doLast {
-        def reportFile = project(":backend").layout.buildDirectory
-                .file("reports/jacoco/integrationTestCoverage/html/index.html")
-                .get()
-                .asFile
-
-        println "\nIntegration test coverage report:\n${reportFile.absolutePath}\n"
-    }
-}

@@ -34,4 +34,12 @@ public final class SessionStateViolationException extends RuntimeException {
     public static SessionStateViolationException notActive(UUID sessionId) {
         return new SessionStateViolationException("Session is not active (id=" + sessionId + ')');
     }
+
+    /**
+     * Creates an exception for operations
+     * that require a finalized session.
+     */
+    public static SessionStateViolationException notFinalized(UUID sessionId) {
+        return new SessionStateViolationException("Session is not finalized (id=" + sessionId + ')');
+    }
 }

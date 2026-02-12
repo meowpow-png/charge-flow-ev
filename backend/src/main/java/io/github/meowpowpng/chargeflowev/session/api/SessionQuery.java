@@ -10,5 +10,7 @@ public interface SessionQuery {
 
     List<FinalizedSession> findAllFinalized();
 
+    boolean sessionExists(UUID sessionId);
+
     boolean hasActiveSession();
 }

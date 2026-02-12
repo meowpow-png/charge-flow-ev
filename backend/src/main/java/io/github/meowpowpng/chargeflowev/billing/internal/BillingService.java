@@ -7,6 +7,8 @@ import io.github.meowpowpng.chargeflowev.billing.domain.PricingRule;
 import io.github.meowpowpng.chargeflowev.session.api.FinalizedSession;
 import io.github.meowpowpng.chargeflowev.session.api.SessionQuery;
 
+import io.github.meowpowpng.chargeflowev.session.api.exception.SessionNotFoundException;
+import io.github.meowpowpng.chargeflowev.session.api.exception.SessionStateViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -43,8 +45,11 @@ public class BillingService implements BillingQuery {
     }
 
     public BillingResult calculateForSession(UUID sessionId) {
+        if (!sessionQuery.sessionExists(sessionId)) {
+            throw SessionNotFoundException.forId(sessionId);
+        }
         var session = sessionQuery.findFinalizedById(sessionId).orElseThrow(() ->
-            new IllegalStateException("Finalized session not found (id=" + sessionId + ')')
+                SessionStateViolationException.notFinalized(sessionId)
         );
         return calculateForSession(session);
     }

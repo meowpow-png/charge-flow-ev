@@ -5,6 +5,7 @@ import io.github.meowpowpng.chargeflowev.billing.domain.BillingResult;
 import io.github.meowpowpng.chargeflowev.billing.domain.PricingRule;
 import io.github.meowpowpng.chargeflowev.session.api.FinalizedSession;
 import io.github.meowpowpng.chargeflowev.session.api.SessionQuery;
+import io.github.meowpowpng.chargeflowev.session.api.exception.SessionNotFoundException;
 import io.github.meowpowpng.chargeflowev.session.domain.SessionType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +15,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -76,12 +76,8 @@ class BillingServiceTest {
         BillingCalculator calculator = new BillingCalculator();
         BillingService service = new BillingService(sessionQuery, calculator, properties);
 
-        when(sessionQuery.findFinalizedById(sessionId)).thenReturn(Optional.empty());
-
         assertThatThrownBy(() -> service.calculateForSession(sessionId))
-                .isInstanceOf(IllegalStateException.class);
-
-        verify(sessionQuery).findFinalizedById(sessionId);
+                .isInstanceOf(SessionNotFoundException.class);
     }
 
     @Test

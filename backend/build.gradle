@@ -62,6 +62,7 @@ dependencies {
     integrationTestRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     integrationTestImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
     integrationTestImplementation 'org.springframework.boot:spring-boot-starter-test'
+    integrationTestImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     integrationTestImplementation 'org.testcontainers:postgresql:1.21.3'
     integrationTestImplementation 'org.testcontainers:jdbc:1.21.3'
 }
@@ -73,6 +74,10 @@ tasks.named("bootRun") {
 
 tasks.withType(Test).configureEach {
     useJUnitPlatform()
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
 
 tasks.register('integrationTest', Test) {
@@ -86,26 +91,18 @@ tasks.named('check') {
     dependsOn integrationTest
 }
 
-tasks.register('testCoverage', JacocoReport) {
-    dependsOn test
+tasks.register('jacocoMergedReport', JacocoReport) {
+    dependsOn tasks.named('test')
+    dependsOn tasks.named('integrationTest')
 
-    executionData.setFrom(layout.buildDirectory.file("jacoco/test.exec"))
+    executionData fileTree(layout.buildDirectory).include(
+            "jacoco/test.exec",
+            "jacoco/integrationTest.exec"
+    )
     sourceSets sourceSets.main
 
     reports {
-        html.required = true
         xml.required = true
-    }
-}
-
-tasks.register('integrationTestCoverage', JacocoReport) {
-    dependsOn integrationTest
-
-    executionData.setFrom(layout.buildDirectory.file("jacoco/integrationTest.exec"))
-    sourceSets sourceSets.main
-
-    reports {
         html.required = true
-        xml.required = true
     }
 }

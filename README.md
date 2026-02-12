@@ -1,5 +1,8 @@
 # ChargeFlow EV ⚡ — Charging Operations Platform
 
+[![Backend CI](https://github.com/meowpow-png/charge-flow-ev/actions/workflows/ci.yml/badge.svg)](https://github.com/meowpow-png/charge-flow-ev/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/github/meowpow-png/charge-flow-ev/graph/badge.svg?token=EUCUTL2ET9)](https://codecov.io/github/meowpow-png/charge-flow-ev)
+
 This project is a backend system that models how e-bike usage generates energy consumption, charging activity, and billable revenue.
 
 The system ingests ride and charging telemetry, persists it as immutable session data, and derives billing records and aggregated analytics in a deterministic and explainable way, using a deliberately simplified EV model that prioritizes analytical clarity over physical accuracy.
