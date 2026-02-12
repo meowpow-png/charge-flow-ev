@@ -9,11 +9,11 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/analytics")
-public class AnalyticsController {
+public final class AnalyticsController {
 
     private final AnalyticsService service;
 
-    public AnalyticsController(AnalyticsService service) {
+    AnalyticsController(AnalyticsService service) {
         this.service = Objects.requireNonNull(service, "service must not be null");
     }
 

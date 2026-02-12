@@ -14,12 +14,12 @@ public class BillingConfiguration {
 
     private final BillingProperties properties;
 
-    public BillingConfiguration(BillingProperties properties) {
+    BillingConfiguration(BillingProperties properties) {
         this.properties = Objects.requireNonNull(properties, "properties must not be null");
     }
 
     @Bean
-    public BillingService billingService(SessionQuery sessionQuery, BillingCalculator calculator) {
+    BillingService billingService(SessionQuery sessionQuery, BillingCalculator calculator) {
         return new BillingService(sessionQuery, calculator, properties);
     }
 }

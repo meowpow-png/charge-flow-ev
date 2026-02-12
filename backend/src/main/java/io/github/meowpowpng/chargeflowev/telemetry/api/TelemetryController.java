@@ -9,11 +9,11 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/sessions/{sessionId}/telemetry")
-public class TelemetryController {
+public final class TelemetryController {
 
     private final TelemetryService service;
 
-    public TelemetryController(TelemetryService service) {
+    TelemetryController(TelemetryService service) {
         this.service = Objects.requireNonNull(service, "service must not be null");
     }
 

@@ -27,7 +27,7 @@ public class DemoService {
     private final TelemetryCommand telemetryCommand;
     private final BillingQuery billingQuery;
 
-    public DemoService(
+    DemoService(
             SessionQuery sessionQuery,
             SessionCommand sessionCommand,
             TelemetryCommand telemetryCommand,

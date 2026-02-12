@@ -21,7 +21,7 @@ public class BillingService implements BillingQuery {
     private final SessionQuery sessionQuery;
     private final BillingCalculator calculator;
 
-    public BillingService(
+    BillingService(
             SessionQuery sessionQuery,
             BillingCalculator calculator,
             BillingProperties properties

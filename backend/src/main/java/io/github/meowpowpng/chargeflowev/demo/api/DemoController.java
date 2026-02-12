@@ -10,11 +10,11 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/demo")
-public class DemoController {
+public final class DemoController {
 
     private final DemoService demoService;
 
-    public DemoController(DemoService demoService) {
+    DemoController(DemoService demoService) {
         this.demoService = Objects.requireNonNull(demoService, "demoService must not be null");
     }
 

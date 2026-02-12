@@ -18,7 +18,7 @@ public class TelemetryService implements TelemetryCommand {
     private final TelemetryRepository repository;
     private final SessionCommand session;
 
-    public TelemetryService(TelemetryRepository repository, SessionCommand session) {
+    TelemetryService(TelemetryRepository repository, SessionCommand session) {
         this.repository = Objects.requireNonNull(repository, "repository must not be null");
         this.session = Objects.requireNonNull(session, "session must not be null");
     }
