@@ -4,6 +4,15 @@ on:
   push:
     branches:
       - dev/ci-setup
+    paths:
+      - 'backend/**'
+      - 'gradle/**'
+      - 'build.gradle'
+      - 'settings.gradle'
+      - 'gradlew'
+      - 'gradlew.bat'
+      - 'docker-compose.yml'
+      - '.github/workflows/**'
   workflow_dispatch:
 
 jobs:
