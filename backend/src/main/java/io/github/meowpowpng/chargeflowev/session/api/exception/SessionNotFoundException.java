@@ -1,4 +1,4 @@
-package io.github.meowpowpng.chargeflowev.session.internal.exception;
+package io.github.meowpowpng.chargeflowev.session.api.exception;
 
 import java.util.UUID;
 

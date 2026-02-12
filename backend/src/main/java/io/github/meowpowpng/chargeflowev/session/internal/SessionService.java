@@ -3,11 +3,11 @@ package io.github.meowpowpng.chargeflowev.session.internal;
 import io.github.meowpowpng.chargeflowev.session.api.FinalizedSession;
 import io.github.meowpowpng.chargeflowev.session.api.SessionCommand;
 import io.github.meowpowpng.chargeflowev.session.api.SessionQuery;
+import io.github.meowpowpng.chargeflowev.session.api.exception.SessionNotFoundException;
+import io.github.meowpowpng.chargeflowev.session.api.exception.SessionStateViolationException;
 import io.github.meowpowpng.chargeflowev.session.domain.Session;
 import io.github.meowpowpng.chargeflowev.session.domain.SessionState;
 import io.github.meowpowpng.chargeflowev.session.domain.SessionType;
-import io.github.meowpowpng.chargeflowev.session.internal.exception.SessionNotFoundException;
-import io.github.meowpowpng.chargeflowev.session.internal.exception.SessionStateViolationException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

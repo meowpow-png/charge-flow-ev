@@ -1,7 +1,4 @@
-package io.github.meowpowpng.chargeflowev.session.api;
-
-import io.github.meowpowpng.chargeflowev.session.internal.exception.SessionNotFoundException;
-import io.github.meowpowpng.chargeflowev.session.internal.exception.SessionStateViolationException;
+package io.github.meowpowpng.chargeflowev.session.api.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
