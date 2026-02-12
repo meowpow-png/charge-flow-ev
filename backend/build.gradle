@@ -18,8 +18,9 @@ java {
 }
 
 dockerCompose {
-    useComposeFiles = ["../docker-compose.yml"]
-    startedServices = ["postgres"]
+    useComposeFiles = [rootProject.file('docker-compose.yml').path]
+    startedServices = ["postgres", "adminer"]
+    isRequiredBy(tasks.named("bootRun"))
 }
 
 repositories {
