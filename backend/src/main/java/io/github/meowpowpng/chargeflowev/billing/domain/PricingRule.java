@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public record PricingRule(BigDecimal unitPrice) {
 
-    public PricingRule(BigDecimal unitPrice) {
-        this.unitPrice = Objects.requireNonNull(unitPrice, "unitPrice must not be null");
+    public PricingRule {
+        Objects.requireNonNull(unitPrice, "unitPrice must not be null");
     }
 }
