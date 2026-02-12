@@ -27,5 +27,11 @@ jobs:
       - name: Make Gradle executable
         run: chmod +x gradlew
 
-      - name: Run tests
-        run: ./gradlew clean test integrationTest
+      - name: Run tests with coverage
+        run: ./gradlew clean testCoverage integrationTestCoverage
+
+      - name: Upload coverage reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports
+          path: backend/build/reports/jacoco/
