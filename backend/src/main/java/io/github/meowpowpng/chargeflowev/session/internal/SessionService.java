@@ -3,6 +3,8 @@ package io.github.meowpowpng.chargeflowev.session.internal;
 import io.github.meowpowpng.chargeflowev.session.api.FinalizedSession;
 import io.github.meowpowpng.chargeflowev.session.api.SessionCommand;
 import io.github.meowpowpng.chargeflowev.session.api.SessionQuery;
+import io.github.meowpowpng.chargeflowev.session.api.exception.SessionNotFoundException;
+import io.github.meowpowpng.chargeflowev.session.api.exception.SessionStateViolationException;
 import io.github.meowpowpng.chargeflowev.session.domain.Session;
 import io.github.meowpowpng.chargeflowev.session.domain.SessionState;
 import io.github.meowpowpng.chargeflowev.session.domain.SessionType;
@@ -30,7 +32,7 @@ public class SessionService implements SessionCommand, SessionQuery {
 
     public Session createSession(SessionType type) {
         if (repository.existsByState(SessionState.ACTIVE)) {
-            throw new IllegalStateException("An active session already exists");
+            throw SessionStateViolationException.activeSessionAlreadyExists();
         }
         var uuid = UUID.randomUUID();
         var now = Instant.now();
@@ -44,10 +46,7 @@ public class SessionService implements SessionCommand, SessionQuery {
     }
 
     public Session getSession(UUID id) {
-        // TODO: Map missing session to HTTP 404 instead of default 500
-        return repository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("Session not found")
-        );
+        return repository.findById(id).orElseThrow(() -> SessionNotFoundException.forId(id));
     }
 
     @Override
@@ -58,16 +57,19 @@ public class SessionService implements SessionCommand, SessionQuery {
     public Session finalizeAndSave(UUID id) {
         Session session = getSession(id);
         if (session.isFinalized()) {
-            throw new IllegalStateException("Session already finalized");
+            throw SessionStateViolationException.alreadyFinalized(id);
         }
         session.finalizeSession(Clock.systemUTC());
         return repository.save(session);
     }
 
     public void addEnergy(UUID sessionId, BigDecimal delta) {
-        Session session = repository.findById(sessionId).filter(Session::isActive).orElseThrow(() ->
-                new IllegalArgumentException("Active session not found (id=" + sessionId + ')')
+        Session session = repository.findById(sessionId).orElseThrow(() ->
+                SessionNotFoundException.forId(sessionId)
         );
+        if (!session.isActive()) {
+            throw SessionStateViolationException.notActive(sessionId);
+        }
         session.addEnergy(delta);
         repository.save(session);
     }

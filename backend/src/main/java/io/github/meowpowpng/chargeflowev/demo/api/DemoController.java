@@ -23,7 +23,10 @@ public final class DemoController {
     public ResponseEntity<DemoResponse> runDemo(
             @Valid @RequestBody DemoRequest request
     ) {
-        DemoResponse response = demoService.run(request);
+        DemoResponse response = demoService.run(
+                request.rideSamples(),
+                request.chargingSamples()
+        );
         return ResponseEntity.ok(response);
     }
 }

@@ -30,13 +30,12 @@ public class TelemetryService implements TelemetryCommand {
 
     @Transactional
     public Telemetry recordTelemetryInternal(UUID sessionId, BigDecimal delta) {
+        session.addEnergy(sessionId, delta);
+
         UUID id = UUID.randomUUID();
         Instant now = Instant.now();
 
         Telemetry telemetry = new Telemetry(id, sessionId, delta, now);
-        repository.save(telemetry);
-
-        session.addEnergy(sessionId, delta);
-        return telemetry;
+        return repository.save(telemetry);
     }
 }
