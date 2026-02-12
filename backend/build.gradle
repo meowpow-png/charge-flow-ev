@@ -20,6 +20,10 @@ java {
 dockerCompose {
     useComposeFiles = [rootProject.file('docker-compose.yml').path]
     startedServices = ["postgres", "adminer"]
+
+    removeVolumes = true
+    removeOrphans = true
+
     isRequiredBy(tasks.named("bootRun"))
 }
 
