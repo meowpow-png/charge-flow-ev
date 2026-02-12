@@ -3,7 +3,7 @@ name: Backend CI
 on:
   push:
     branches:
-      - ci-setup
+      - dev/ci-setup
   workflow_dispatch:
 
 jobs:
