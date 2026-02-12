@@ -9,7 +9,7 @@ public interface SessionCommand {
 
     UUID startSession(SessionType type);
 
-    void finalizeSession(UUID sessionId);
+    FinalizedSession finalizeSession(UUID sessionId);
 
     void addEnergy(UUID sessionId, BigDecimal delta);
 }

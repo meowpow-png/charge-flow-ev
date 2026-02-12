@@ -51,8 +51,8 @@ public class SessionService implements SessionCommand, SessionQuery {
     }
 
     @Override
-    public void finalizeSession(UUID sessionId) {
-        finalizeAndSave(sessionId);
+    public FinalizedSession finalizeSession(UUID sessionId) {
+        return new FinalizedSessionImpl(finalizeAndSave(sessionId));
     }
 
     public Session finalizeAndSave(UUID id) {
