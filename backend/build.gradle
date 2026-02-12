@@ -73,6 +73,10 @@ tasks.named("bootRun") {
 
 tasks.withType(Test).configureEach {
     useJUnitPlatform()
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
 
 tasks.register('integrationTest', Test) {
