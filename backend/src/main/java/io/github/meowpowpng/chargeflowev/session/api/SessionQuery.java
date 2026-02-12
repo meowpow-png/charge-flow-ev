@@ -9,4 +9,6 @@ public interface SessionQuery {
     Optional<FinalizedSession> findFinalizedById(UUID sessionId);
 
     List<FinalizedSession> findAllFinalized();
+
+    boolean hasActiveSession();
 }

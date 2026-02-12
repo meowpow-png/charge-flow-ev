@@ -37,6 +37,6 @@ public class SessionController {
 
     @PostMapping("/{id}/finalize")
     public Session finalizeSession(@PathVariable UUID id) {
-        return service.finalizeSession(id);
+        return service.finalizeAndSave(id);
     }
 }
