@@ -44,3 +44,9 @@ jobs:
         with:
           name: coverage-reports
           path: backend/build/reports/jacoco/
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: backend/build/reports/jacoco/testCoverage/testCoverage.xml
+          fail_ci_if_error: true
