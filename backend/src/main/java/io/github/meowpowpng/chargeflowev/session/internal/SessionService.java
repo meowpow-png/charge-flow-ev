@@ -23,6 +23,11 @@ public class SessionService implements SessionCommand, SessionQuery {
         this.repository = repository;
     }
 
+    @Override
+    public UUID startSession(SessionType type) {
+        return createSession(type).getId();
+    }
+
     public Session createSession(SessionType type) {
         if (repository.existsByState(SessionState.ACTIVE)) {
             throw new IllegalStateException("An active session already exists");
@@ -43,6 +48,11 @@ public class SessionService implements SessionCommand, SessionQuery {
         return repository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("Session not found")
         );
+    }
+
+    @Override
+    public void finalizeSession(UUID sessionId) {
+        finalizeAndSave(sessionId);
     }
 
     public Session finalizeAndSave(UUID id) {
