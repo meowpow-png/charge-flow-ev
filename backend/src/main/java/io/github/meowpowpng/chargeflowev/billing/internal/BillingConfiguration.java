@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Objects;
 
 @Configuration
+@SuppressWarnings("unused")
 @EnableConfigurationProperties(BillingProperties.class)
 public class BillingConfiguration {
 

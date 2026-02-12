@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @RestController
+@SuppressWarnings("unused")
 @RequestMapping("/sessions")
 public final class SessionController {
 

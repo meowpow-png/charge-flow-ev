@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @RestController
+@SuppressWarnings("unused")
 @RequestMapping("/billing")
 public final class BillingController {
 
