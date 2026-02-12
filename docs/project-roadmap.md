@@ -69,78 +69,85 @@ The backend can accept basic session-related API calls and persist domain data r
 A reviewer can start the application, create a ride or charging session via Swagger,
 and verify that the data is correctly stored and retrieved from the database.
 
-## Day 3 — Analytics & Deterministic Derivations
+## Day 3 — Telemetry, Billing & Analytics
 
 **Goal:**
 
-Derived business data (billing and usage metrics) can be calculated deterministically
-from persisted session data and exposed via read-only APIs.
+The backend supports a complete, deterministic end-to-end flow (session → telemetry → finalize → billing → analytics) that can be manually exercised via REST APIs, without client.
 
 **To-Do:**
 
-- Implement deterministic billing calculations based on persisted sessions
+- Implement minimal telemetry ingestion endpoints (backend-owned)
+- Persist telemetry samples as immutable, append-only data
+- Accumulate session energy totals from telemetry while sessions are active
+- Implement session finalization
+- Implement deterministic billing calculations based on finalized sessions
 - Implement aggregation logic for usage metrics (e.g. energy, cost, counts)
-- Expose read-only analytics endpoints
+- Expose read-only billing and analytics endpoints
 - Add focused unit tests for billing and calculation logic
 - Manually verify deterministic results via repeated executions
 
 **Explicit Non-Goals:**
 
+- No simulation client
+- No real-time or streaming behavior
+- No telemetry aggregation beyond session totals
 - No data visualization or dashboards
-- No real-time or streaming analytics
 - No complex query optimization
 - No external reporting or export formats
 
 **Definition of Done:**
 
-- Given the same persisted input data, analytics endpoints always return the same results
-- Billing calculations are covered by unit tests
+- Telemetry can be POSTed via REST APIs and is persisted immutably
+- Session energy totals are derived from ingested telemetry
+- Sessions can be finalized via API
+- Billing runs only on finalized sessions
 - Analytics endpoints are read-only and side-effect free
-- Aggregated values can be explained directly from stored session data
+- Given the same persisted input data, results are deterministic
+- Billing calculations are covered by unit tests
+- Aggregated values are explainable from stored session and telemetry data
 
 **Outcome:**
 
-A reviewer can inspect analytics endpoints and clearly understand how
-raw session data translates into billing and usage metrics.
+A reviewer can use Swagger UI to execute and inspect a full end-to-end backend flow and clearly understand how telemetry produces billing and usage metrics.
 
-## Day 4 — Simulation Client & Telemetry Ingestion
+## Day 4 — CI/CD Pipeline & Simulation Client
 
 **Goal:**
 
-External producers (including an optional simulation client) can emit ride and charging
-telemetry via REST APIs, and the backend ingests and processes this data correctly.
+The project can be built and validated automatically, and an optional LibGDX-based simulation client can execute the full backend flow without any manual API interaction.
 
 **To-Do:**
 
-- Define backend-owned telemetry ingestion endpoints
-- Model and persist telemetry as immutable input data
-- Implement telemetry association with active sessions
+- Implement a minimal CI pipeline (build + tests on push)
+- Verify clean build and test execution in CI
 - Create a minimal LibGDX simulation client
 - Implement HTTP communication with backend REST endpoints
-- Emit ride telemetry events
-- Emit charging session completion
-- Execute one complete ride → charging → billing flow
-- Verify backend ingestion via Swagger UI and analytics endpoints
+- Automate session start, telemetry emission, session finalization, and billing flow
+- Execute one complete ride → charging → billing flow via the client
+- Verify client-generated data via backend billing and analytics endpoints
 
 **Explicit Non-Goals:**
 
+- No backend feature development
 - No gameplay mechanics or UI polish
 - No real-time synchronization or streaming
 - No bidirectional communication
 - No client-side business logic or calculations
+- No performance or load testing
 
 **Definition of Done:**
 
-- Telemetry can be ingested manually via backend APIs (e.g. Swagger UI)
-- Telemetry is persisted and reflected in finalized session data
-- Simulation client can emit telemetry using the same APIs
-- Backend analytics reflect ingested telemetry
-- No backend logic depends on the simulation client being present
+- CI pipeline builds the project and runs tests successfully
+- Project passes CI from a clean clone
+- Simulation client runs independently of the backend
+- Client uses the same REST APIs available via Swagger UI
+- Backend analytics and billing reflect client-generated telemetry
+- No backend logic depends on the simulation client
 
 **Outcome:**
 
-The system demonstrates a full end-to-end flow using externally generated telemetry,
-while remaining fully inspectable without the simulation client.
+A reviewer can clone the repository, see CI passing, optionally run the simulation client, and observe a complete, automated end-to-end flow on the backend.
 
 ## Day 5 — Polish, Hardening & Demo Readiness
 
