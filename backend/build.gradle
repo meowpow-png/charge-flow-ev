@@ -90,26 +90,18 @@ tasks.named('check') {
     dependsOn integrationTest
 }
 
-tasks.register('testCoverage', JacocoReport) {
-    dependsOn test
+tasks.register('jacocoMergedReport', JacocoReport) {
+    dependsOn tasks.named('test')
+    dependsOn tasks.named('integrationTest')
 
-    executionData.setFrom(layout.buildDirectory.file("jacoco/test.exec"))
+    executionData fileTree(layout.buildDirectory).include(
+            "jacoco/test.exec",
+            "jacoco/integrationTest.exec"
+    )
     sourceSets sourceSets.main
 
     reports {
-        html.required = true
         xml.required = true
-    }
-}
-
-tasks.register('integrationTestCoverage', JacocoReport) {
-    dependsOn integrationTest
-
-    executionData.setFrom(layout.buildDirectory.file("jacoco/integrationTest.exec"))
-    sourceSets sourceSets.main
-
-    reports {
         html.required = true
-        xml.required = true
     }
 }
