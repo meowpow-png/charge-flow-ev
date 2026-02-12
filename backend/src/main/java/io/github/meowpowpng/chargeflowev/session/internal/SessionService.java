@@ -1,18 +1,20 @@
 package io.github.meowpowpng.chargeflowev.session.internal;
 
+import io.github.meowpowpng.chargeflowev.session.api.FinalizedSession;
+import io.github.meowpowpng.chargeflowev.session.api.SessionCommand;
+import io.github.meowpowpng.chargeflowev.session.api.SessionQuery;
 import io.github.meowpowpng.chargeflowev.session.domain.Session;
 import io.github.meowpowpng.chargeflowev.session.domain.SessionState;
 import io.github.meowpowpng.chargeflowev.session.domain.SessionType;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.Instant;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Service
-public class SessionService {
+public class SessionService implements SessionCommand, SessionQuery {
 
     private final SessionRepository repository;
 
@@ -43,12 +45,36 @@ public class SessionService {
         );
     }
 
-    public Session finalizeSession(UUID id) {
+    public Session finalizeAndSave(UUID id) {
         Session session = getSession(id);
         if (session.isFinalized()) {
             throw new IllegalStateException("Session already finalized");
         }
         session.finalizeSession(Clock.systemUTC());
         return repository.save(session);
+    }
+
+    public void addEnergy(UUID sessionId, BigDecimal delta) {
+        Session session = repository.findById(sessionId).filter(Session::isActive).orElseThrow(() ->
+                new IllegalArgumentException("Active session not found (id=" + sessionId + ')')
+        );
+        session.addEnergy(delta);
+        repository.save(session);
+    }
+
+    @Override
+    public Optional<FinalizedSession> findFinalizedById(UUID sessionId) {
+        var session = repository.findById(sessionId).filter(Session::isFinalized);
+        return session.map(FinalizedSessionImpl::new);
+    }
+
+    @Override
+    public List<FinalizedSession> findAllFinalized() {
+        var result = repository.findAll().stream()
+                .filter(Session::isFinalized)
+                .map(FinalizedSessionImpl::new)
+                .toList();
+
+        return new ArrayList<>(result);
     }
 }
