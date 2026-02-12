@@ -87,4 +87,9 @@ public class SessionService implements SessionCommand, SessionQuery {
 
         return new ArrayList<>(result);
     }
+
+    @Override
+    public boolean hasActiveSession() {
+        return repository.existsByState(SessionState.ACTIVE);
+    }
 }
