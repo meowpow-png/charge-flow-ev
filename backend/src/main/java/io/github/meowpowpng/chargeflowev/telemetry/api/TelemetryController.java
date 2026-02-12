@@ -22,7 +22,7 @@ public class TelemetryController {
             @PathVariable UUID sessionId,
             @RequestBody TelemetryRequest request
     ) {
-        var telemetry = service.recordTelemetry(sessionId, request.energyDelta());
+        var telemetry = service.recordTelemetryInternal(sessionId, request.energyDelta());
         return new TelemetryResponse(telemetry.getId());
     }
 }

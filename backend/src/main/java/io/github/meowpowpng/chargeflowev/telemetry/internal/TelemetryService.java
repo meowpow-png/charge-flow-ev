@@ -1,6 +1,7 @@
 package io.github.meowpowpng.chargeflowev.telemetry.internal;
 
 import io.github.meowpowpng.chargeflowev.session.api.SessionCommand;
+import io.github.meowpowpng.chargeflowev.telemetry.api.TelemetryCommand;
 import io.github.meowpowpng.chargeflowev.telemetry.domain.Telemetry;
 
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Service
-public class TelemetryService {
+public class TelemetryService implements TelemetryCommand {
 
     private final TelemetryRepository repository;
     private final SessionCommand session;
@@ -22,8 +23,13 @@ public class TelemetryService {
         this.session = Objects.requireNonNull(session, "session must not be null");
     }
 
+    @Override
+    public void recordTelemetry(UUID sessionId, BigDecimal delta) {
+        recordTelemetryInternal(sessionId, delta);
+    }
+
     @Transactional
-    public Telemetry recordTelemetry(UUID sessionId, BigDecimal delta) {
+    public Telemetry recordTelemetryInternal(UUID sessionId, BigDecimal delta) {
         UUID id = UUID.randomUUID();
         Instant now = Instant.now();
 
