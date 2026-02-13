@@ -123,3 +123,7 @@ Individual tasks:
 - [Domain Concepts](docs/domain-concept.md) — bounded contexts and responsibilities
 - [Project Specification](docs/project-spec.md) — scope, constraints, and success criteria
 - [Development Journal](docs/dev-journal/journal-index.md) — key implementation decisions and trade-offs
+
+---
+
+Licensed under the MIT License.
