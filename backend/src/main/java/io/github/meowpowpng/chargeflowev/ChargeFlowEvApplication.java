@@ -8,6 +8,5 @@ public class ChargeFlowEvApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ChargeFlowEvApplication.class, args);
-        System.out.println("Hello World!");
     }
 }
