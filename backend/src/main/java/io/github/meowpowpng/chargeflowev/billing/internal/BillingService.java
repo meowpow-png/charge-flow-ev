@@ -7,28 +7,32 @@ import io.github.meowpowpng.chargeflowev.billing.domain.PricingRule;
 import io.github.meowpowpng.chargeflowev.session.api.FinalizedSession;
 import io.github.meowpowpng.chargeflowev.session.api.SessionQuery;
 
+import io.github.meowpowpng.chargeflowev.session.api.exception.SessionNotFoundException;
+import io.github.meowpowpng.chargeflowev.session.api.exception.SessionStateViolationException;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
 
 @Service
 public class BillingService implements BillingQuery {
 
-    // TODO: Externalize into application configuration instead of hardcoding
-    static final BigDecimal RIDE_PRICE = new BigDecimal("0.30");
-    static final BigDecimal CHARGING_COST = new BigDecimal("0.10");
-
-    private final PricingRule ridePricingRule = new PricingRule(RIDE_PRICE);
-    private final PricingRule chargingPricingRule = new PricingRule(CHARGING_COST);
+    private final PricingRule ridePricingRule;
+    private final PricingRule chargingPricingRule;
 
     private final SessionQuery sessionQuery;
     private final BillingCalculator calculator;
 
-    public BillingService(SessionQuery sessionQuery, BillingCalculator calculator) {
+    BillingService(
+            SessionQuery sessionQuery,
+            BillingCalculator calculator,
+            BillingProperties properties
+    ) {
         this.sessionQuery = Objects.requireNonNull(sessionQuery, "sessionQuery must not be null");
         this.calculator = Objects.requireNonNull(calculator, "calculator must not be null");
+
+        this.ridePricingRule = new PricingRule(properties.ridePrice());
+        this.chargingPricingRule = new PricingRule(properties.chargingCost());
     }
 
     @Override
@@ -41,8 +45,11 @@ public class BillingService implements BillingQuery {
     }
 
     public BillingResult calculateForSession(UUID sessionId) {
+        if (!sessionQuery.sessionExists(sessionId)) {
+            throw SessionNotFoundException.forId(sessionId);
+        }
         var session = sessionQuery.findFinalizedById(sessionId).orElseThrow(() ->
-            new IllegalStateException("Finalized session not found (id=" + sessionId + ')')
+                SessionStateViolationException.notFinalized(sessionId)
         );
         return calculateForSession(session);
     }

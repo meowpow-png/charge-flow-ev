@@ -5,6 +5,7 @@ import io.github.meowpowpng.chargeflowev.billing.domain.BillingResult;
 import io.github.meowpowpng.chargeflowev.billing.domain.PricingRule;
 import io.github.meowpowpng.chargeflowev.session.api.FinalizedSession;
 import io.github.meowpowpng.chargeflowev.session.api.SessionQuery;
+import io.github.meowpowpng.chargeflowev.session.api.exception.SessionNotFoundException;
 import io.github.meowpowpng.chargeflowev.session.domain.SessionType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +15,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,11 +26,16 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class BillingServiceTest {
 
+    private BillingProperties properties;
     private SessionQuery sessionQuery;
     private UUID sessionId;
 
     @BeforeEach
     void setupBillingServiceTest() {
+        properties = new BillingProperties(
+                new BigDecimal("0.3"),
+                new BigDecimal("0.1")
+        );
         sessionQuery = mock(SessionQuery.class);
         sessionId = UUID.randomUUID();
     }
@@ -39,7 +44,7 @@ class BillingServiceTest {
     @DisplayName("Should return correct result when calculating from FinalizedSession")
     void should_ReturnCorrectResult_when_CalculatingFromSession() {
         BillingCalculator calculator = mock(BillingCalculator.class);
-        BillingService service = new BillingService(sessionQuery, calculator);
+        BillingService service = new BillingService(sessionQuery, calculator, properties);
         BigDecimal energyTotal = new BigDecimal("12.500");
 
         FinalizedSession session = mock(FinalizedSession.class);
@@ -69,21 +74,17 @@ class BillingServiceTest {
     @DisplayName("Should throw exception when session ID does not resolve to session")
     void should_ThrowException_when_SessionNotFound() {
         BillingCalculator calculator = new BillingCalculator();
-        BillingService service = new BillingService(sessionQuery, calculator);
-
-        when(sessionQuery.findFinalizedById(sessionId)).thenReturn(Optional.empty());
+        BillingService service = new BillingService(sessionQuery, calculator, properties);
 
         assertThatThrownBy(() -> service.calculateForSession(sessionId))
-                .isInstanceOf(IllegalStateException.class);
-
-        verify(sessionQuery).findFinalizedById(sessionId);
+                .isInstanceOf(SessionNotFoundException.class);
     }
 
     @Test
     @DisplayName("Should use ride pricing rule when session type is RIDE")
     void should_UseRidePricingRule_when_SessionTypeIsRide() {
         BillingCalculator calculator = mock(BillingCalculator.class);
-        BillingService service = new BillingService(sessionQuery, calculator);
+        BillingService service = new BillingService(sessionQuery, calculator, properties);
 
         FinalizedSession session = mock(FinalizedSession.class);
         when(session.getId()).thenReturn(sessionId);
@@ -96,7 +97,7 @@ class BillingServiceTest {
         verify(calculator).calculate(any(), any(), ruleCaptor.capture());
 
         var actualUnitPrice = ruleCaptor.getValue().unitPrice();
-        var expectedUnitPrice = BillingService.RIDE_PRICE;
+        var expectedUnitPrice = properties.ridePrice();
         assertThat(actualUnitPrice).isEqualByComparingTo(expectedUnitPrice);
     }
 }

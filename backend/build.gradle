@@ -1,9 +1,10 @@
 //file:noinspection GroovyAssignabilityCheck
 plugins {
-	id 'java'
+    id 'java'
     id 'jacoco'
-	id 'org.springframework.boot' version '4.0.2'
-	id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.springframework.boot' version '4.0.2'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'com.avast.gradle.docker-compose' version '0.17.21'
 }
 
 group = 'io.github.meowpowpng'
@@ -14,6 +15,16 @@ java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(21)
 	}
+}
+
+dockerCompose {
+    useComposeFiles = [rootProject.file('docker-compose.yml').path]
+    startedServices = ["postgres", "adminer"]
+
+    removeVolumes = true
+    removeOrphans = true
+
+    isRequiredBy(tasks.named("bootRun"))
 }
 
 repositories {
@@ -38,6 +49,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-flyway'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.1'
 
     implementation 'org.flywaydb:flyway-database-postgresql'
@@ -47,14 +60,24 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     integrationTestRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    integrationTestImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test:4.0.2'
+    integrationTestImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
     integrationTestImplementation 'org.springframework.boot:spring-boot-starter-test'
+    integrationTestImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     integrationTestImplementation 'org.testcontainers:postgresql:1.21.3'
     integrationTestImplementation 'org.testcontainers:jdbc:1.21.3'
 }
 
+tasks.named("bootRun") {
+    dependsOn composeUp
+    finalizedBy composeDown
+}
+
 tasks.withType(Test).configureEach {
     useJUnitPlatform()
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
 
 tasks.register('integrationTest', Test) {
@@ -68,26 +91,18 @@ tasks.named('check') {
     dependsOn integrationTest
 }
 
-tasks.register('testCoverage', JacocoReport) {
-    dependsOn test
+tasks.register('jacocoMergedReport', JacocoReport) {
+    dependsOn tasks.named('test')
+    dependsOn tasks.named('integrationTest')
 
-    executionData.setFrom(layout.buildDirectory.file("jacoco/test.exec"))
+    executionData fileTree(layout.buildDirectory).include(
+            "jacoco/test.exec",
+            "jacoco/integrationTest.exec"
+    )
     sourceSets sourceSets.main
 
     reports {
-        html.required = true
         xml.required = true
-    }
-}
-
-tasks.register('integrationTestCoverage', JacocoReport) {
-    dependsOn integrationTest
-
-    executionData.setFrom(layout.buildDirectory.file("jacoco/integrationTest.exec"))
-    sourceSets sourceSets.main
-
-    reports {
         html.required = true
-        xml.required = true
     }
 }

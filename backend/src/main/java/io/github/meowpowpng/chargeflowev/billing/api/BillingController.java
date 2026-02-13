@@ -8,12 +8,13 @@ import java.util.Objects;
 import java.util.UUID;
 
 @RestController
+@SuppressWarnings("unused")
 @RequestMapping("/billing")
-public class BillingController {
+public final class BillingController {
 
     private final BillingService service;
 
-    public BillingController(BillingService service) {
+    BillingController(BillingService service) {
         Objects.requireNonNull(service, "service must not be null");
         this.service = service;
     }
