@@ -154,7 +154,7 @@ A reviewer can clone the repository, see CI passing,
 open Swagger UI, execute the demo flow manually,
 and understand how telemetry produces billing and analytics results.
 
-## Day 5 — Polish, Hardening & Demo Readiness
+## Day 5 — Final Review
 
 **Goal:**
 
