@@ -69,7 +69,6 @@ dependencies {
 
 tasks.named("bootRun") {
     dependsOn composeUp
-    finalizedBy composeDown
 }
 
 tasks.withType(Test).configureEach {
@@ -81,6 +80,9 @@ tasks.withType(Test).configureEach {
 }
 
 tasks.register('integrationTest', Test) {
+    description = "Runs integration tests."
+    group = "verification"
+
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
 
@@ -91,10 +93,7 @@ tasks.named('check') {
     dependsOn integrationTest
 }
 
-tasks.register('jacocoMergedReport', JacocoReport) {
-    dependsOn tasks.named('test')
-    dependsOn tasks.named('integrationTest')
-
+tasks.register('coverage', JacocoReport) {
     executionData fileTree(layout.buildDirectory).include(
             "jacoco/test.exec",
             "jacoco/integrationTest.exec"
@@ -105,4 +104,5 @@ tasks.register('jacocoMergedReport', JacocoReport) {
         xml.required = true
         html.required = true
     }
+    dependsOn check
 }

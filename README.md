@@ -1,70 +1,129 @@
 # ChargeFlow EV ⚡ — Charging Operations Platform
 
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?logo=springboot&logoColor=fff)](#)
+[![Postgres](https://img.shields.io/badge/Postgres-%23316192.svg?logo=postgresql&logoColor=white)](#)
 [![Backend CI](https://github.com/meowpow-png/charge-flow-ev/actions/workflows/ci.yml/badge.svg)](https://github.com/meowpow-png/charge-flow-ev/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/github/meowpow-png/charge-flow-ev/graph/badge.svg?token=EUCUTL2ET9)](https://codecov.io/github/meowpow-png/charge-flow-ev)
 
-This project is a backend system that models how e-bike usage generates energy consumption, charging activity, and billable revenue.
 
-The system ingests ride and charging telemetry, persists it as immutable session data, and derives billing records and aggregated analytics in a deterministic and explainable way, using a deliberately simplified EV model that prioritizes analytical clarity over physical accuracy.
+ChargeFlow EV is a deliberately scoped backend system developed within a fixed 5-day timebox. It models how e-bike usage generates energy consumption, charging activity, and billable revenue.
 
-A minimal simulation client is included solely to generate realistic telemetry for demonstration and validation purposes. The backend itself is the primary focus of this project.
+## Purpose
+
+This project demonstrates disciplined backend modeling within a constrained scope.
+
+It emphasizes:
+
+- Clear ownership of domain responsibilities
+- Explicit session state transitions
+- Deterministic derivation of billing from immutable data
+- Pragmatic scope control and trade-off decisions
+
+## How It Works
 
 - Telemetry is ingested via REST APIs
-- Usage is modeled as immutable ride and charging sessions
-- Billing and metrics are derived when sessions are finalized
-- Aggregated analytics are exposed via read-only endpoints
+- Sessions manage lifecycle and immutability
+- Billing is calculated from finalized energy totals
+- Analytics exposes read-only aggregates
 
-## What Problem This Solves
+## Architecture
 
-Companies operating shared e-bikes or EV assets need to understand:
+The system is implemented as a modular monolith. The codebase is organized
+by domain context rather than technical layers.
 
-- How much energy is consumed per ride
-- How charging infrastructure is utilized
-- How usage translates into revenue
+```
+src/main/java/...  
+├── session  
+│ ├── api  
+│ ├── domain  
+│ └── internal  
+├── telemetry  
+├── billing  
+├── analytics  
+└── demo
+```
 
-This project demonstrates how those concerns can be modeled, measured, and billed in a clean backend system.
+Each context owns its models and business logic. Cross-context interaction
+is explicit and limited to well-defined boundaries.
 
-## System Components
+## Components
 
 - **Backend Service (Java / Spring Boot)**
-  Handles session lifecycles, billing logic, and analytics.
+  A single deployable service responsible for session lifecycle management,
+  billing logic, and analytics.
 
-- **Relational Database**
-  Persists sessions, telemetry, and billing records.
+- **PostgreSQL Database**
+  Persists sessions, telemetry, and derived billing data.
 
-- **Simulation Client (optional)**
-  A minimal LibGDX-based tool that simulates a single e-bike ride and charging flow by emitting telemetry via the backend APIs.
+## Configuration
 
-## Demo Flow
+Billing prices are externalized via application properties:
 
-1. A ride session is started
-2. Ride telemetry is periodically recorded
-3. The ride completes at a charging station
-4. A charging session completes
-5. Billing and metrics are calculated automatically
+```properties
+chargeflow.billing.ride-price=0.30
+chargeflow.billing.charging-cost=0.10
+```
+
+Values are validated at startup and can be adjusted without modifying domain code.
+
+## Quick Start
+
+**Requirements**
+
+- Java 21+
+- Docker (for PostgreSQL)
+
+**Start Database**
+
+```sh
+docker compose up -d
+```
+
+or
+
+```sh
+./gradlew composeUp
+```
+
+> [!NOTE]
+> Docker Compose also starts Adminer in a separate container.
+
+**Start Backend**
+
+```sh
+./gradlew bootRun
+```
+
+**Run Demo**
+
+1. Open Swagger UI: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui/index.html)
+2. Execute `/demo/run` in `demo-controller` with desired telemetry sample counts
+3. Inspect the returned session ids and billing results
+4. (Optional) Execute `/analytics/summary` to inspect aggregated metrics
+
+**Run Tests**
+
+Run all verification tasks and generate coverage:
+
+```sh
+./gradlew clean check coverage
+```
+
+Individual tasks:
+
+```
+./gradlew test
+./gradlew integrationTest
+./gradlew coverage
+```
 
 ## Documentation
 
-- [System Concept](docs/system-concept.md) — high-level conceptual model and system behavior
-- [Domain Concepts](docs/domain-concept.md) — core domain language and models
-- [Development Journal](docs/dev-journal/journal-index.md) — implementation notes and decisions
-- [Project Specification](docs/project-spec.md) — scope, constraints, success criteria, and technology choices
+- [System Concept](docs/system-concept.md) — conceptual lifecycle and data flow
+- [Domain Concepts](docs/domain-concept.md) — bounded contexts and responsibilities
+- [Project Specification](docs/project-spec.md) — scope, constraints, and success criteria
+- [Development Journal](docs/dev-journal/journal-index.md) — key implementation decisions and trade-offs
 
-## Inspecting the System
+---
 
-The backend can be inspected in three ways:
-
-1. **Swagger UI**
-   All APIs are documented and can be exercised manually.
-
-2. **Pre-seeded demo data**
-   The application starts with a complete example ride and charging session,
-   allowing analytics and billing endpoints to be inspected immediately.
-
-3. **Simulation client (optional)**
-   A minimal LibGDX client is included to demonstrate how telemetry is generated.
-   This is not required to evaluate the backend.
-
-## Running the Demo
-
-> Detailed setup instructions will be added once implementation begins.
+Licensed under the MIT License.

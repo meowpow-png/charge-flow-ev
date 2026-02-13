@@ -10,7 +10,7 @@ This journal documents **key engineering decisions and scope control** made duri
 ## Entries
 
 - [Day 1 — Project Definition & Documentation](d1-project-definition.md)
-- [Day 2 — Session Domain Modeling](d2--session-domain.md)
-- [Day 3 — Telemetry & Billing](day-3-telemetry-and-billing.md)
-- [Day 4 — Analytics & Aggregation](d4-analytics-and-aggregation.md)
+- [Day 2 — Backend Skeleton & Persistence Baseline](d2-backend-skeleton.md)
+- [Day 3 — Telemetry, Billing & Analytics](d3-telemetry-and-derivation.md)
+- [Day 4 — CI, Integration Testing & API Demo](d4-ci-testing-and-demo.md)
 - [Day 5 — Final Review & Validation](d5-final-review.md)

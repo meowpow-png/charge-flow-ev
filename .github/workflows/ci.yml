@@ -14,6 +14,9 @@ on:
       - 'gradlew.bat'
       - 'docker-compose.yml'
       - '.github/workflows/**'
+  pull_request:
+    branches:
+      - master
   workflow_dispatch:
 
 jobs:
@@ -40,7 +43,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run tests with coverage
-        run: ./gradlew clean unitTest integrationTest jacocoMergedReport
+        run: ./gradlew clean coverage
 
       - name: Upload coverage reports
         uses: actions/upload-artifact@v4
