@@ -5,9 +5,7 @@
 
 This project is a backend system that models how e-bike usage generates energy consumption, charging activity, and billable revenue.
 
-The system ingests ride and charging telemetry, persists it as immutable session data, and derives billing records and aggregated analytics in a deterministic and explainable way, using a deliberately simplified EV model that prioritizes analytical clarity over physical accuracy.
-
-A minimal simulation client is included solely to generate realistic telemetry for demonstration and validation purposes. The backend itself is the primary focus of this project.
+The system ingests ride and charging telemetry, persists it as immutable session data, and derives billing records and aggregated analytics in a deterministic and explainable way.
 
 - Telemetry is ingested via REST APIs
 - Usage is modeled as immutable ride and charging sessions
@@ -31,9 +29,6 @@ This project demonstrates how those concerns can be modeled, measured, and bille
 
 - **Relational Database**
   Persists sessions, telemetry, and billing records.
-
-- **Simulation Client (optional)**
-  A minimal LibGDX-based tool that simulates a single e-bike ride and charging flow by emitting telemetry via the backend APIs.
 
 ## Demo Flow
 
@@ -61,9 +56,6 @@ The backend can be inspected in three ways:
    The application starts with a complete example ride and charging session,
    allowing analytics and billing endpoints to be inspected immediately.
 
-3. **Simulation client (optional)**
-   A minimal LibGDX client is included to demonstrate how telemetry is generated.
-   This is not required to evaluate the backend.
 
 ## Running the Demo
 

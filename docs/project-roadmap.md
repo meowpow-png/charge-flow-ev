@@ -29,7 +29,7 @@ The project intent, scope, and constraints are fully defined and documented.
 - README clearly defines system purpose, non-goals, and evaluation paths
 - Domain concepts are documented and consistently named
 - Project scope and constraints are fixed and written down
-- Repository structure supports the planned backend and simulation client
+- Repository structure supports the planned backend
 
 **Outcome:**
 
@@ -73,7 +73,7 @@ and verify that the data is correctly stored and retrieved from the database.
 
 **Goal:**
 
-The backend supports a complete, deterministic end-to-end flow (session → telemetry → finalize → billing → analytics) that can be manually exercised via REST APIs, without client.
+The backend supports a complete, deterministic end-to-end flow (session → telemetry → finalize → billing → analytics) that can be manually exercised via REST APIs.
 
 **To-Do:**
 
@@ -89,7 +89,6 @@ The backend supports a complete, deterministic end-to-end flow (session → tele
 
 **Explicit Non-Goals:**
 
-- No simulation client
 - No real-time or streaming behavior
 - No telemetry aggregation beyond session totals
 - No data visualization or dashboards
@@ -111,50 +110,56 @@ The backend supports a complete, deterministic end-to-end flow (session → tele
 
 A reviewer can use Swagger UI to execute and inspect a full end-to-end backend flow and clearly understand how telemetry produces billing and usage metrics.
 
-## Day 4 — CI/CD Pipeline & Simulation Client
+## Day 4 — CI, Integration Testing & API Demo
 
 **Goal:**
 
-The project can be built and validated automatically, and an optional LibGDX-based simulation client can execute the full backend flow without any manual API interaction.
+The project can be built and validated automatically, and a reviewer can
+manually execute a complete backend flow via REST endpoints.
 
 **To-Do:**
 
 - Implement a minimal CI pipeline (build + tests on push)
 - Verify clean build and test execution in CI
-- Create a minimal LibGDX simulation client
-- Implement HTTP communication with backend REST endpoints
-- Automate session start, telemetry emission, session finalization, and billing flow
-- Execute one complete ride → charging → billing flow via the client
-- Verify client-generated data via backend billing and analytics endpoints
+- Add focused REST integration tests for critical API flows
+- Ensure integration tests run against a real Spring context
+- Configure and report test coverage
+- Expose coverage status via badge in README
+- Ensure Swagger UI exposes all relevant endpoints
+- Define and validate a simple, reproducible API demo flow
+  (session → telemetry → finalize → billing → analytics)
+- Confirm project builds successfully from a clean clone
+- Ensure deterministic behavior across environments
 
 **Explicit Non-Goals:**
 
-- No backend feature development
-- No gameplay mechanics or UI polish
-- No real-time synchronization or streaming
-- No bidirectional communication
-- No client-side business logic or calculations
+- No continuous deployment (CD)
+- No new backend feature development
 - No performance or load testing
+- No architectural refactors
+- No expansion of business scope
 
 **Definition of Done:**
 
-- CI pipeline builds the project and runs tests successfully
+- CI pipeline builds the project and runs all tests successfully
+- REST integration tests validate critical backend flows
+- Coverage is generated and visible
+- A reviewer can execute a full end-to-end demo flow via Swagger UI
 - Project passes CI from a clean clone
-- Simulation client runs independently of the backend
-- Client uses the same REST APIs available via Swagger UI
-- Backend analytics and billing reflect client-generated telemetry
-- No backend logic depends on the simulation client
+- Results are reproducible and deterministic
 
 **Outcome:**
 
-A reviewer can clone the repository, see CI passing, optionally run the simulation client, and observe a complete, automated end-to-end flow on the backend.
+A reviewer can clone the repository, see CI passing,
+open Swagger UI, execute the demo flow manually,
+and understand how telemetry produces billing and analytics results.
 
 ## Day 5 — Polish, Hardening & Demo Readiness
 
 **Goal:**
 
 The project can be evaluated confidently by an external reviewer with minimal setup
-and no guidance from the author.
+and guidance from the author.
 
 **To-Do:**
 
@@ -168,9 +173,8 @@ and no guidance from the author.
 **Explicit Non-Goals:**
 
 - No new features or functionality
-- No architectural refactors
 - No performance tuning or optimization
-- No cosmetic UI improvements
+- No cosmetic improvements
 
 **Definition of Done:**
 

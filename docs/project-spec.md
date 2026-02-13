@@ -31,9 +31,6 @@ This project intentionally does **not** attempt to solve the following:
 - **Real-time streaming or large-scale distribution**
   No message brokers, WebSockets, or scaling concerns.
 
-- **High-fidelity gameplay or UI polish**
-  The simulation client is not a game product and contains no advanced mechanics or visuals.
-
 These exclusions are deliberate to keep focus on analytics and billing logic.
 
 ## Definition of Done
@@ -64,21 +61,16 @@ The project is considered successful if:
 - **Local Infrastructure:** Docker + docker-compose (PostgreSQL only)
 - **CI/CD:** Basic pipeline for build and tests on push
 - **Frontend:** None (REST-only backend; UI intentionally out of scope)
-- **Client:** Minimal LibGDX-based client used to emit ride and charging telemetry
 
 ## Testing
 
 Given the fixed 5-day timebox, testing is approached deliberately and in phases.
 
-During early development, APIs are manually exercised using Swagger UI to validate
-domain behavior, session lifecycles, and request/response contracts while the model
-is still evolving. This allows rapid feedback and avoids locking unstable behavior
-into automated tests too early.
+During early development, APIs are manually exercised using Swagger UI to validate domain behavior, session lifecycles, and request/response contracts while the model is still evolving. This allows rapid feedback and avoids locking unstable behavior into automated tests too early.
 
-Once the end-to-end flow is validated through the simulation client and the system
-behavior stabilizes, automated tests are introduced:
+Once the end-to-end flow is validated and the system stabilizes, automated tests are introduced:
 
 - Unit tests for deterministic business logic (billing, energy calculations)
-- Focused integration tests for persistence and aggregation boundaries
+- Focused integration tests for persistence, aggregation boundaries and API endpoints
 
 The goal of testing in this project is not exhaustive coverage, but to ensure that the most critical and error-prone logic is verified and remains stable as the system evolves.

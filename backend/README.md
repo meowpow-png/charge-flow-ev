@@ -29,12 +29,6 @@ and aggregation behavior.
 - Deterministic pricing model
 - One complete end-to-end flow
 
-## Integration Notes
-
-- Telemetry is produced by an external simulation client
-- The backend does not depend on the simulation client to function
-- APIs can be exercised manually via Swagger UI
-
 ## Technology
 
 - Java
