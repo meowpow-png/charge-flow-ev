@@ -3,7 +3,8 @@ name: Backend CI
 on:
   push:
     branches:
-      - dev/ci-setup
+      - master
+      - 'dev/**'
     paths:
       - 'backend/**'
       - 'gradle/**'
